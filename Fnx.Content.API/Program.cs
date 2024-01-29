@@ -63,8 +63,7 @@ app.MapGet("/api/search",
 
 app.MapGet("/api/auth",
      () =>
-    {
-       
+    {       
         var jwt = new JwtService(jwtKey, jwtIssuer);        
         var token = jwt.GenerateToken();
         return Results.Ok(new { Token = token });
