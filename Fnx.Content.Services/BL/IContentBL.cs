@@ -9,7 +9,7 @@ namespace Fnx.Content.Services.BL
 {
     public interface IContentBL
     {
-        public Task<ResultData<GitRepoItem>> GetGitItems(string? searchKey, int? take = 10);
+        public Task<ResultData<GitRepoItem>> GetGitItems(string? searchKey, int? take = 10, int? skip = 10);
 
     }
 }

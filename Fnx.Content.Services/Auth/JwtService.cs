@@ -17,7 +17,7 @@ namespace Fnx.Content.Services.Auth
             _issuer = issuer;
         }
 
-        public string GenerateToken(string userId, string username, int expirationMinutes = 60)
+        public string GenerateToken(int expirationMinutes = 60)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

@@ -52,9 +52,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 app.MapGet("/api/search",
-    async (IContentBL bl, [FromQuery] string? searchKey, [FromQuery] int? take) =>
+    async (IContentBL bl, [FromQuery] string? searchKey, [FromQuery] int? take, [FromQuery] int? skip) =>
     {
-        var res = await bl.GetGitItems(searchKey,take);
+        var res = await bl.GetGitItems(searchKey, take, skip);
         return res;
     }).WithMetadata(new SwaggerOperationAttribute(summary: "Summary", description: "Descritption Test"))
     .Produces<List<GitRepoItem>>()
@@ -65,11 +65,8 @@ app.MapGet("/api/auth",
      () =>
     {
        
-        var jwt = new JwtService(jwtKey, jwtIssuer);
-        var userId = "123";
-        var username = "john_doe";
-
-        var token = jwt.GenerateToken(userId, username);
+        var jwt = new JwtService(jwtKey, jwtIssuer);        
+        var token = jwt.GenerateToken();
         return Results.Ok(new { Token = token });
     })   
     .WithName("GenerateToken");
@@ -83,13 +80,11 @@ app.MapControllers();
 
 if (app.Environment.IsDevelopment())
 {
-
     app.UseSwagger();
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Fnx.Content.API v1");
     });
-
 }
 
 app.Run();

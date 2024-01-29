@@ -21,13 +21,13 @@ namespace Fnx.Content.Services.BL
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
         }
-        public async Task<ResultData<GitRepoItem>> GetGitItems(string? searchKey, int? take = 100)
+        public async Task<ResultData<GitRepoItem>> GetGitItems(string? searchKey, int? take = 100, int? skip = 0)
         {
             var url = _configuration["CommonUrls:GitAPI"];
             _client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "http://developer.github.com/v3/#user-agent-required");
             var response = await _client.GetAsync($"{url}?q={searchKey ?? " "}");
             var x = await response.ReadContentAs<ResultData<GitRepoItem>>();
-            x.Items = x.Items.Take(take ?? 100).ToList();
+            x.Items = x.Items.Skip(skip ?? 0).Take(take ?? 100).ToList();
             return x;
 
         }
